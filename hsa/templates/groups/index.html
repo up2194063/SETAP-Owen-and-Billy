@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Groups{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('groups.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for group in groups %}
+    <article class="group">
+      <header>
+        <div>
+          <h1>{{ group['group_name'] }}</h1>
+          <div class="about">Created by {{ group['username'] }}</div>
+        </div>
+        {% if group['group_creator'] == 'Y' and g.user['user_id'] == group['user_id'] %}
+          <a class="action" href="{{ url_for('groups.update', group_id=group['group_id']) }}">Edit</a>
+        {% endif %}
+      </header>
+      <p class="body">{{ group['group_description'] }}</p>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
