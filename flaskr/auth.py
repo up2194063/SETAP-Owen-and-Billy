@@ -1,5 +1,5 @@
 import functools
-
+import re
 from flask import Blueprint
 from flask import flash
 from flask import g
@@ -63,6 +63,10 @@ def register():
             error = "Email is required."
         elif not password:
             error = "Password is required."
+        elif len(password) < 8:
+            error = "Password must be at least 8 characters long"
+        elif not re.match(r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':\"\\|,.<>\/?]+).{8,}$", password):
+            error = "Password must contain at least: one number, one lowercase letter and one uppercase letter."
 
         if error is None:
             try:
@@ -82,6 +86,7 @@ def register():
         flash(error)
 
     return render_template("auth/register.html")
+    #could add username=username and email=email so that entries are prefilled upon entering wrong inputs
 
 
 @bp.route("/login", methods=("GET", "POST"))
