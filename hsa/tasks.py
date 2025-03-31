@@ -9,12 +9,13 @@ from werkzeug.exceptions import abort
 
 from .auth import login_required
 from .db import get_db
+from .groups import get_group
 
 bp = Blueprint("tasks", __name__, url_prefix='/<int:group_id>/tasks')
 
-@bp.route("/")
+@bp.route("/", methods=(['GET']))
 @login_required
-def index():
+def index(group_id):
     """Show all the tasks within the group."""
 
     db = get_db()
@@ -22,9 +23,11 @@ def index():
         "SELECT t.task_id, t.task_name, t.task_description, t.task_deadline, t.group_id, tu.user_id, tu.task_creator, u.username"
         " FROM tasks t JOIN tasks_users tu ON t.task_id = tu.task_id"
         " JOIN users u ON u.user_id = tu.user_id"
+        " WHERE t.group_id = ?",
+        (group_id,)
     ).fetchall()
-
-    return render_template("tasks/index.html", tasks=tasks)
+    print(tasks)
+    return render_template("tasks/index.html", tasks=tasks, group_id=group_id)
 
 def get_task(task_id, check_creator=True):
     """Get a group and its creator by id.
@@ -61,7 +64,7 @@ def get_task(task_id, check_creator=True):
 
 @bp.route("/create", methods=("GET", "POST"))
 @login_required
-def create_task(group_id):
+def create(group_id):
     """Create a new task for the current user."""
     if request.method == "POST":
         task_name = request.form["task_name"]
@@ -84,9 +87,9 @@ def create_task(group_id):
                 (task_name, task_description, task_deadline, group_id),
             )
             db.commit()
-            return redirect(url_for("tasks.index"))  # Redirect to task list (or your task index route)
+            return redirect(url_for("tasks.index", group_id=group_id))  # Redirect to task list (or your task index route)
 
-    return render_template("tasks/create_task.html")
+    return render_template("tasks/create.html")
 
 @bp.route("/<int:task_id>/update", methods=("GET", "POST"))
 @login_required
@@ -114,7 +117,7 @@ def update(task_id):
                 "UPDATE task SET task_name = ?, task_description = ?, task_deadline = ? WHERE task_id = ?", (task_name, task_description, task_deadline, task_id)
             )
             db.commit()
-            return redirect(url_for("tasks.index"))
+            return redirect(url_for("tasks.index", group_id=task['group_id']))
 
     return render_template("tasks/update.html", task=task)
 
@@ -126,8 +129,8 @@ def delete(task_id):
     Ensures that the task exists and that the logged in user is the
     author of the task.
     """
-    get_task(task_id)
+    task = get_task(task_id)
     db = get_db()
     db.execute("DELETE FROM tasks WHERE task_id = ?", (task_id,))
     db.commit()
-    return redirect(url_for("tasks.index"))
+    return redirect(url_for("tasks.index", group_id=task['group_id']))
