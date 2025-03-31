@@ -17,7 +17,7 @@
         </div>
         <div>
         {% if task['task_creator'] == 'Y' and g.user['user_id'] == task['user_id'] %}
-        <a class="action" href="{{ url_for('tasks.update', task_id=task['task_id']) }}">Edit</a>
+        <a class="action" href="{{ url_for('tasks.update', task_id=task['task_id'], group_id=task['group_id']) }}">Edit</a>
         {% endif %}
         </div>
     </header>
