@@ -66,7 +66,7 @@ def register():
         elif len(password) < 8:
             error = "Password must be at least 8 characters long"
         elif not re.match(r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':\"\\|,.<>\/?]+).{8,}$", password):
-            error = "Password must contain at least: one number, one lowercase letter and one uppercase letter."
+            error = "Password must contain at least: one number, one lowercase letter, one uppercase letter and one special character."
 
         if error is None:
             try:
