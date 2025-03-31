@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import click
 from datetime import datetime
@@ -20,6 +21,8 @@ def close_db(e=None):
         db.close()
 
 def init_db():
+    if os.path.exists('instance/hsa.sqlite'):
+        os.remove('instance/hsa.sqlite')
     db = get_db()
 
     with current_app.open_resource('schema.sql') as f:
