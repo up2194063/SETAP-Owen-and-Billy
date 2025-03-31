@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Tasks{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('tasks.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for task in tasks %}
+    <article class="task">
+    <header>
+        <div>
+        <h1>{{ task['task_name'] }}</h1>
+        <div class="about">Created by {{ task['username'] }}</div>
+        </div>
+        <div>
+        {% if task['task_creator'] == 'Y' and g.user['user_id'] == task['user_id'] %}
+        <a class="action" href="{{ url_for('tasks.update', task_id=task['task_id']) }}">Edit</a>
+        {% endif %}
+        </div>
+    </header>
+    <p class="body">{{ task['task_description'] }}</p>
+    <p class="body">Deadline: {{ task['task_deadline'] }}</p>
+    </article>
+    {% if not loop.last %}
+    <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
