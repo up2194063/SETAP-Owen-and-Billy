@@ -20,7 +20,7 @@
           {% if group['group_creator'] == 'Y' and g.user['user_id'] == group['user_id'] %}
             <a class="action" href="{{ url_for('groups.update', group_id=group['group_id']) }}">Edit</a>
           {% endif %}
-        </div>
+          </div>
         </header>
         <p class="body">{{ group['group_description'] }}</p>
       </article>
