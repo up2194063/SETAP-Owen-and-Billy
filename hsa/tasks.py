@@ -87,13 +87,21 @@ def create(group_id):
                 (task_name, task_description, task_deadline, group_id),
             )
             db.commit()
+            task_id = (db.execute(
+                "SELECT last_insert_rowid()"
+            ).fetchone()[0])
+            db.execute(
+                "INSERT INTO tasks_users (user_id, task_id, task_creator) VALUES (?, ?, ?)",
+                (g.user['user_id'], task_id, 'Y')
+            )
+            db.commit()
             return redirect(url_for("tasks.index", group_id=group_id))  # Redirect to task list (or your task index route)
 
     return render_template("tasks/create.html")
 
 @bp.route("/<int:task_id>/update", methods=("GET", "POST"))
 @login_required
-def update(task_id):
+def update(group_id, task_id):
     """Update a task if the current user is the author."""
     task = get_task(task_id)
 
@@ -114,16 +122,16 @@ def update(task_id):
         else:
             db = get_db()
             db.execute(
-                "UPDATE task SET task_name = ?, task_description = ?, task_deadline = ? WHERE task_id = ?", (task_name, task_description, task_deadline, task_id)
+                "UPDATE tasks SET task_name = ?, task_description = ?, task_deadline = ? WHERE task_id = ?", (task_name, task_description, task_deadline, task_id)
             )
             db.commit()
             return redirect(url_for("tasks.index", group_id=task['group_id']))
 
-    return render_template("tasks/update.html", task=task)
+    return render_template("tasks/update.html", task=task, group_id=task['group_id'])
 
 @bp.route("/<int:task_id>/delete", methods=("POST",))
 @login_required
-def delete(task_id):
+def delete(group_id, task_id):
     """Delete a task.
 
     Ensures that the task exists and that the logged in user is the
