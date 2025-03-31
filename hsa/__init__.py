@@ -38,9 +38,11 @@ def create_app(test_config=None):
     # apply the blueprints to the app
     from . import auth
     from . import groups
+    from . import tasks
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(groups.bp)
+    app.register_blueprint(tasks.bp)
 
     # make url_for('index') == url_for('blog.index')
     # in another app, you might define a separate main index here with
