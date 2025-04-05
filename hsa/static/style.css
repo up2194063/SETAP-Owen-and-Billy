@@ -124,6 +124,11 @@ nav ul li a, nav ul li span, header .action {
   white-space: pre-line;
 }
 
+.task .deadline {
+  font-style: italic;
+  font-weight: bold;
+}
+
 .content:last-child {
   margin-bottom: 0;
 }
