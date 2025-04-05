@@ -79,7 +79,7 @@ nav ul li a, nav ul li span, header .action {
 .group > header {
   display: flex;
   align-items: flex-end;
-  font-size: 0.85em;
+  font-size: 0.9em;
 }
 
 .group > header > div:first-of-type {
@@ -97,6 +97,30 @@ nav ul li a, nav ul li span, header .action {
 }
 
 .group .body {
+  white-space: pre-line;
+}
+
+.task > header {
+  display: flex;
+  align-items: flex-end;
+  font-size: 0.9em;
+}
+
+.task > header > div:first-of-type {
+  flex: auto;
+}
+
+.task > header h1 {
+  font-size: 1.5em;
+  margin-bottom: 0;
+}
+
+.task .about {
+  color: slategray;
+  font-style: italic;
+}
+
+.task .body {
   white-space: pre-line;
 }
 
