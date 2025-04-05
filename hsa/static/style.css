@@ -76,27 +76,27 @@ nav ul li a, nav ul li span, header .action {
   border: 1px solid #377ba8;
 }
 
-.post > header {
+.group > header {
   display: flex;
   align-items: flex-end;
   font-size: 0.85em;
 }
 
-.post > header > div:first-of-type {
+.group > header > div:first-of-type {
   flex: auto;
 }
 
-.post > header h1 {
+.group > header h1 {
   font-size: 1.5em;
   margin-bottom: 0;
 }
 
-.post .about {
+.group .about {
   color: slategray;
   font-style: italic;
 }
 
-.post .body {
+.group .body {
   white-space: pre-line;
 }
 
