@@ -3,6 +3,7 @@
 {% block header %}
   <h1>{% block title %}Tasks{% endblock %}</h1>
   {% if g.user %}
+    <a class="action" href="{{ url_for('groups.index') }}">My Groups</a>
     <a class="action" href="{{ url_for('tasks.create', group_id=group_id) }}">New</a>
   {% endif %}
 {% endblock %}
