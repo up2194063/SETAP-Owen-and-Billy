@@ -26,7 +26,6 @@ def index(group_id):
         " WHERE t.group_id = ?",
         (group_id,)
     ).fetchall()
-    print(tasks)
     return render_template("tasks/index.html", tasks=tasks, group_id=group_id)
 
 def get_task(task_id, check_creator=True):
