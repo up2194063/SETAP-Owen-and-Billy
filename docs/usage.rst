@@ -9,7 +9,7 @@ local clone of the repository.
 
 For example:
 
-.. code_block:: bash
+.. code-block:: bash
 
     PS C:\users\my_user\repository_name
 
