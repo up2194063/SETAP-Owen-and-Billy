@@ -1,5 +1,6 @@
 Usage
 =====
+The following page will talk through all the features of the HouseShare Assistant app including what they do and how to use them.
 
 Login/Registration
 ------------------
