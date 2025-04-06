@@ -25,7 +25,11 @@ The final step before being able to open the web app is the initialisation of th
 
 .. code-block:: console
 
-    PS C:\users\my_user\repository_name> python -m flask --app hsa run --debug
+    PS C:\users\my_user\repository_name> python -m flask --app hsa init-db
+
+.. note::
+
+    The initialisation of the database must only be completed for the initial setup of the app, as re-initialising the database will erase all existing data
 
 When the above code is run, this will host the web app on a server which can be seen in the terminal:
 
