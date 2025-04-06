@@ -11,7 +11,7 @@ For example:
 
 .. code-block:: console
 
-    PS C:\\users\\my_user\\repository_name
+    PS ``C:\users\my_user\repository_name``
 
 .. code-block:: python
     
