@@ -1,5 +1,4 @@
 project = 'HouseShare Assistant'
-pygments_style = 'sphinx'
 
 extensions = [
     'sphinx.ext.duration',
