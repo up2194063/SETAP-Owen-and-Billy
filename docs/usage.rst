@@ -13,13 +13,13 @@ redirected to the login page to type in your account details.
     :alt: Login page of the web application that requires an email address and password
     :align: center
 
-*Figure 1 - HouseShare Assistsant login page*
+    *Figure 1 - HouseShare Assistsant login page*
 
 .. image:: images/registration_page.png
     :alt: Registration page of the web application that requires a username, email address and password
     :align: center
 
-*Figure 2 - HouseShare Assistsant registration page*
+    *Figure 2 - HouseShare Assistsant registration page*
 
 Groups
 ------
