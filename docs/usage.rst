@@ -9,9 +9,9 @@ local clone of the repository.
 
 For example:
 
-.. code-block:: bash
+.. code-block:: console
 
-    PS C:\users\my_user\repository_name
+    PS C:\\users\\my_user\\repository_name
 
 .. code-block:: python
     
