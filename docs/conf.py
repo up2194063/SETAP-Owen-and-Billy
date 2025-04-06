@@ -1,1 +1,1 @@
-
+project = 'HouseShare Assistant'
