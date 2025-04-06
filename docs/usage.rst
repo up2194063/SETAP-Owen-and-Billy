@@ -11,8 +11,17 @@ redirected to the login page to type in your account details.
 
 .. image:: images/login_page.png
     :alt: Login page of the web application that requires an email address and password
-    :width: 400
+
+.. class:: center
+    *Figure 1 - HouseShare Assistsant login page*
 
 .. image:: images/registration_page.png
     :alt: Registration page of the web application that requires a username, email address and password
-    :width: 400
+
+.. class:: center
+    *Figure 2 - HouseShare Assistsant registration page*
+
+Groups
+------
+
+After logging into the HouseShare Assistant web application you will be taken to the groups page. From here, you can create a group
