@@ -11,10 +11,4 @@ For example:
 
 .. code-block:: console
 
-    PS ``C:\users\my_user\repository_name``
-    PS G:'\'My Drive'\'Y2'\'SETAP'\'GitHub Clones'\'SETAP-Owen-and-Billy
-
-.. code-block:: python
-    
-    def my_function():
-        print("Hello, world!")
+    PS C:\users\my_user\repository_name
