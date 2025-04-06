@@ -28,7 +28,7 @@ After logging into the HouseShare Assistant web application you will be taken to
 task section of a group and edit or delete a group. After you have created, edited or deleted a group, you will be returned to the group page to see the other groups you are in.
 
 .. note::
-    Only the creator of the group has the ability to edit the details of the group
+    Only the creator of the group has the ability to edit and delete the group
 
 .. image:: images/group_page.png
     :alt: Group page of the web application showing the groups the user is in as well as 'Edit' and 'Open' buttons
