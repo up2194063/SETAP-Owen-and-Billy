@@ -12,3 +12,8 @@ For example:
 .. code_block:: bash
 
     PS C:\users\my_user\repository_name
+
+.. code-block:: python
+    
+    def my_function():
+        print("Hello, world!")
