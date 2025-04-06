@@ -10,15 +10,15 @@ def create_app(test_config=None):
         # a default secret that should be overridden by instance config
         SECRET_KEY="dev",
         # store the database in the instance folder
-        DATABASE=os.path.join(app.instance_path, "flaskr.sqlite"),
+        DATABASE=os.path.join(app.instance_path, "hsa.sqlite"),
     )
 
-    # if test_config is None:
-    #     # load the instance config, if it exists, when not testing
-    #     app.config.from_pyfile("config.py", silent=True)
-    # else:
-    #     # load the test config if passed in
-    #     app.config.update(test_config)
+    if test_config is None:
+        # load the instance config, if it exists, when not testing
+        app.config.from_pyfile("config.py", silent=True)
+    else:
+        # load the test config if passed in
+        app.config.update(test_config)
 
     # ensure the instance folder exists
     try:
@@ -38,9 +38,11 @@ def create_app(test_config=None):
     # apply the blueprints to the app
     from . import auth
     from . import groups
+    from . import tasks
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(groups.bp)
+    app.register_blueprint(tasks.bp)
 
     # make url_for('index') == url_for('blog.index')
     # in another app, you might define a separate main index here with

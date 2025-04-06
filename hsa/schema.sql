@@ -52,6 +52,8 @@ CREATE TABLE tasks (
 CREATE TABLE payments_users (
     payment_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
+    payment_creator TEXT NOT NULL,
+    CHECK (payment_creator IN ('Y', 'N')),
     FOREIGN KEY (payment_id) REFERENCES payments (payment_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
@@ -60,6 +62,8 @@ CREATE TABLE payments_users (
 CREATE TABLE tasks_users (
     task_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
+    task_creator TEXT NOT NULL,
+    CHECK (task_creator IN ('Y', 'N')),
     FOREIGN KEY (task_id) REFERENCES tasks (task_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
