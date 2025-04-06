@@ -11,7 +11,8 @@ redirected to the login page to type in your account details.
 
 .. image:: images/login_page.png
     :alt: Login page of the web application that requires an email address and password
-    :width: 200
+    :width: 400
 
 .. image:: images/registration_page.png
     :alt: Registration page of the web application that requires a username, email address and password
+    :width: 400
