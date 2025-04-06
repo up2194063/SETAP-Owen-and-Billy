@@ -42,7 +42,7 @@ task section of a group and edit or delete a group. After you have created, edit
 
 *Figure 4 - HouseShare Assistsant group creation page*
 
-.. image:: images/group_editing_page.png
+.. image:: images/group_edit_page.png
     :alt: Group editing page of the web application which allows the user to change the group details or delete the group
     :align: center
 
