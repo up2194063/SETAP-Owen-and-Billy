@@ -55,7 +55,7 @@ task section of a group and edit or delete a group. After you have created, edit
 Tasks
 -----
 
-If you press the 'Open' button on a group, this wilol take you to the tasks page for that group. From here, you can create, edit or delete tasks for this group. After you have completed any of 
+If you press the 'Open' button on a group, this will take you to the tasks page for that group. From here, you can create, edit or delete tasks for this group. After you have completed any of 
 these three actions successfully, you will be returned to the tasks page for that group. If you wish to go back and see the page of the other groups you're in, press the 'My Groups' button just
 below the 'Logout' button in the top right of the screen.
 
