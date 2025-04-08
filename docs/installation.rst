@@ -12,13 +12,13 @@ For example:
 
 Before you are able to use the web app, a few more steps are required. The first step is to pip install Flask, which can be achieved by typing the following code into the terminal:
 
-.. code-block:: console
+.. code-block:: posh
 
     PS C:\users\my_user\repository_name> pip install Flask
 
 The final step before being able to open the web app is the initialisation of the databse, which can be achieved by typing the following code into the terminal:
 
-.. code-block:: console
+.. code-block:: posh
 
     PS C:\users\my_user\repository_name> python -m flask --app hsa init-db
 
@@ -26,9 +26,15 @@ The final step before being able to open the web app is the initialisation of th
 
     The initialisation of the database must only be completed for the initial setup of the app, as re-initialising the database will erase all existing data
 
+After completing all of the steps above, the following code must be run in the terminal for the app to run:
+
+.. code-block:: posh
+
+    PS C:\users\my_user\repository_name> python -m flask --app hsa run --debug
+
 When the above code is run, this will host the web app on a server which can be seen in the terminal:
 
-.. code-block:: console
+.. code-block:: posh
 
     PS C:\users\my_user\repository_name> python -m flask --app hsa run --debug
      * Serving Flask app 'hsa'
