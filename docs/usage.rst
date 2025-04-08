@@ -9,6 +9,10 @@ When you first open the app, you will be prompted with the login screen. If you 
 If not then press the 'Register' button in the top right corner of the page instead and enter your username, email and password to create an account. After registration, you will be
 redirected to the login page to type in your account details.
 
+.. note::
+    If at any point you would like to change user or create a new account, simply log out using the 'Log out' button in the top right of the screen and you will be returned to the login page of
+    the web application
+
 .. image:: images/login_page.png
     :alt: Login page of the web application that requires an email address and password
     :align: center
@@ -53,7 +57,7 @@ Tasks
 
 If you press the 'Open' button on a group, this wilol take you to the tasks page for that group. From here, you can create, edit or delete tasks for this group. After you have completed any of 
 these three actions successfully, you will be returned to the tasks page for that group. If you wish to go back and see the page of the other groups you're in, press the 'My Groups' button just
-below the 'Login' and 'Register' buttons in the top right of the screen.
+below the 'Logout' button in the top right of the screen.
 
 .. note::
     Just like the groups page, only the creator of a task can edit or delete that task
@@ -75,7 +79,3 @@ below the 'Login' and 'Register' buttons in the top right of the screen.
     :align: center
 
 *Figure 8 - HouseShare Assistsant task editing page*
-
-.. note::
-    If at any point you would like to change user or create a new account, simply log out using the 'Log out' button in the top right of the screen and you will be returned to the login page of
-    the web application
