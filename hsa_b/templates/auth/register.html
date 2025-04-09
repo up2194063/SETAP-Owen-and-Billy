@@ -9,9 +9,9 @@
     <label for="username">Username</label>
     <input name="username" id="username" required>
     <label for="email">Email</label>
-    <input name="email" id="email" required>
+    <input name="email" id="email" type="email" required placeholder="Please enter a valid email address e.g email@example.com">
     <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
+    <input type="password" name="password" id="password" required placeholder= "Password must be at least 8 characters and contain at least: one number, one lowercase letter, one uppercase letter and one special character.">
     <input type="submit" value="Register">
   </form>
 {% endblock %}
