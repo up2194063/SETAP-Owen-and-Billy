@@ -2,6 +2,7 @@ import sqlite3
 import click
 from datetime import datetime
 from flask import current_app, g
+import os
 
 def get_db():
     if 'db' not in g:
@@ -20,6 +21,8 @@ def close_db(e=None):
         db.close()
 
 def init_db():
+    if os.path.exists('instance/flaskr.sqlite'):
+        os.remove('instance/flaskr.sqlite')
     db = get_db()
 
     with current_app.open_resource('schema.sql') as f:
