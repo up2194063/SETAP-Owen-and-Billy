@@ -12,11 +12,10 @@ from .db import get_db
 
 bp = Blueprint("groups", __name__)
 
-
+# show all the groups that the user is in
 @bp.route("/")
 @login_required
 def index():
-    """Show all the groups that the user is in."""
 
     db = get_db()
     groups = db.execute(
@@ -27,19 +26,10 @@ def index():
 
     return render_template("groups/index.html", groups=groups)
 
-
+# get a group and its creator by group_id.
+# checks that the id exists and optionally that the current user is the creator
+# returns the group with creator information
 def get_group(group_id, check_creator=True):
-    """Get a group and its creator by id.
-
-    Checks that the id exists and optionally that the current user is
-    the creator.
-
-    :param id: id of group to get
-    :param check_author: require the current user to be the creator
-    :return: the group with creator information
-    :raise 404: if a group with the given id doesn't exist
-    :raise 403: if the current user isn't the creator
-    """
     group = (
         get_db()
         .execute(
@@ -60,12 +50,11 @@ def get_group(group_id, check_creator=True):
 
     return group
 
-
+# create a new group for the current user
 @bp.route("/create", methods=("GET", "POST"))
 @login_required
 def create():
     
-    """Create a new post for the current user."""
     if request.method == "POST":
         group_name = request.form["group_name"]
         group_description = request.form["group_description"]
@@ -95,11 +84,10 @@ def create():
 
     return render_template("groups/create.html")
 
-
+# update a group if the current user is the creator
 @bp.route("/<int:group_id>/update", methods=("GET", "POST"))
 @login_required
 def update(group_id):
-    """Update a post if the current user is the author."""
     group = get_group(group_id)
 
     if request.method == "POST":
@@ -122,15 +110,12 @@ def update(group_id):
 
     return render_template("groups/update.html", group=group)
 
-
+# delete a group
+# ensures that the group exists and that the logged in user is the creator of the group.
 @bp.route("/<int:group_id>/delete", methods=("POST",))
 @login_required
 def delete(group_id):
-    """Delete a post.
-
-    Ensures that the post exists and that the logged in user is the
-    author of the post.
-    """
+    
     get_group(group_id)
     db = get_db()
     db.execute("DELETE FROM groups WHERE group_id = ?", (group_id,))
