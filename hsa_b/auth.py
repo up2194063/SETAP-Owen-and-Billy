@@ -15,10 +15,9 @@ from hsa_b.db import get_db
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
-
+# view decorator that redirects anonymous users to the login page
 def login_required(view):
-    """View decorator that redirects anonymous users to the login page."""
-
+    
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
@@ -28,11 +27,9 @@ def login_required(view):
 
     return wrapped_view
 
-
+# if a user id is stored in the session, load the user object from the database into ``g.user``
 @bp.before_app_request
 def load_logged_in_user():
-    """If a user id is stored in the session, load the user object from
-    the database into ``g.user``."""
     user_id = session.get("user_id")
 
     if user_id is None:
@@ -42,14 +39,9 @@ def load_logged_in_user():
             get_db().execute("SELECT * FROM users WHERE user_id = ?", (user_id,)).fetchone()
         )
 
-
+# register a new user.
 @bp.route("/register", methods=("GET", "POST"))
 def register():
-    """Register a new user.
-
-    Validates that the username is not already taken. Hashes the
-    password for security.
-    """
     if request.method == "POST":
         username = request.form["username"]
         email = request.form['email']
@@ -67,7 +59,8 @@ def register():
             error = "Password must be at least 8 characters long"
         elif not re.match(r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':\"\\|,.<>\/?]+).{8,}$", password):
             error = "Password must contain at least: one number, one lowercase letter, one uppercase letter and one special character."
-
+        # validates that the email is not already registered.
+        # hashes the password for security
         if error is None:
             try:
                 db.execute(
@@ -87,10 +80,9 @@ def register():
 
     return render_template("auth/register.html")
 
-
+# log in a registered user by adding the user id to the session
 @bp.route("/login", methods=("GET", "POST"))
 def login():
-    """Log in a registered user by adding the user id to the session."""
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
@@ -115,9 +107,8 @@ def login():
 
     return render_template("auth/login.html")
 
-
+# clear the current session, including the stored user id
 @bp.route("/logout")
 def logout():
-    """Clear the current session, including the stored user id."""
     session.clear()
     return redirect(url_for("index"))
