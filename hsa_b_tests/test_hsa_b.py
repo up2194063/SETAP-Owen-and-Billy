@@ -229,12 +229,14 @@ def test_login_success(client, app):
 
 #Test 2: Test correct response when an incorrect email is used
 def test_login_incorrect_email(client, app):
+    register_user(client)
     response = client.post('/auth/login', data={'email': 'incorrect@gmail.com', 'password': 'Password123!'})
     assert response.status_code == 200  # Expect a 200 OK status when the error page renders
     assert b'Incorrect email.' in response.data  # Check for the error message
 
 #Test 3: Test correct response when an incorrect password is used
 def test_login_incorrect_password(client, app):
+    register_user(client)
     # Attempt to log in with invalid credentials
     response = client.post('/auth/login', data={'email': 'owen25@gmail.com', 'password': 'invalidPassword'})
     
