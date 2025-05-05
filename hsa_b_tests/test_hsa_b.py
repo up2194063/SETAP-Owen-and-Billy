@@ -1,6 +1,15 @@
 import pytest
 from hsa_b.db import get_db
 
+# Helper function to register a user
+def register_user(client, username="owen", email="owen25@gmail.com", password="Password123!"):
+    return client.post("/auth/register", data={
+        "username": username,
+        "email": email,
+        "password": password
+    })
+
+
 #Fixtures (get used for each new test)
 @pytest.fixture
 def client(app):
@@ -98,7 +107,11 @@ def app():
         """)
 
         yield app
+        
 #These following tests are testing the robustness of registration
+
+#REGISTRATION
+
 #Test 1: Testing that a new user is created when valid registration details are entered
 def test_registration_success(client, app):
     response = client.post("/auth/register", data={
@@ -183,3 +196,50 @@ def test_registration_duplicate_email(client, app):
     })
     
     assert b"Account with email owen25@gmail.com is already registered." in response.data  # Check for error message
+
+#These following tests are testing the robustness of the group page
+#This includes, cre
+
+#REGISTRATION
+
+
+
+
+
+
+
+
+
+#TESTING LOGIN
+
+#Test 1: Test successful login with valid credentials
+
+def test_login_success(client, app):
+    # Register a user first using the helper function
+    register_user(client)
+
+    # Log in with valid credentials
+    response = client.post("/auth/login", data={
+        "email": "owen25@gmail.com",
+        "password": "Password123!"
+    })
+
+    assert response.status_code == 302  # Should redirect after successful login
+    assert response.location.endswith("/")  # Ensure redirection to groups or main page
+
+#Test 2: Test correct response when an incorrect email is used
+def test_login_incorrect_email(client, app):
+    response = client.post('/auth/login', data={'email': 'incorrect@gmail.com', 'password': 'Password123!'})
+    assert response.status_code == 200  # Expect a 200 OK status when the error page renders
+    assert b'Incorrect email.' in response.data  # Check for the error message
+
+#Test 3: Test correct response when an incorrect password is used
+def test_login_incorrect_password(client, app):
+    # Attempt to log in with invalid credentials
+    response = client.post('/auth/login', data={'email': 'owen25@gmail.com', 'password': 'invalidPassword'})
+    
+    # Ensure that the response code is 200 (login page is rendered again after the error)
+    assert response.status_code == 200
+
+    # Check if the flash message for incorrect password is present in the response body (rendered HTML)
+    assert b'Incorrect password.' in response.data  # Check for the error message in HTML
