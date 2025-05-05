@@ -13,10 +13,10 @@ from .groups import get_group
 
 bp = Blueprint("tasks", __name__, url_prefix='/<int:group_id>/tasks')
 
+# show all the tasks within the group
 @bp.route("/", methods=(['GET']))
 @login_required
 def index(group_id):
-    """Show all the tasks within the group."""
 
     db = get_db()
     tasks = db.execute(
@@ -28,18 +28,10 @@ def index(group_id):
     ).fetchall()
     return render_template("tasks/index.html", tasks=tasks, group_id=group_id)
 
+# get a task and its creator by task_id
+# checks that the id exists and optionally that the current user is the creator
+# returns the task with creator information
 def get_task(task_id, check_creator=True):
-    """Get a group and its creator by id.
-
-    Checks that the id exists and optionally that the current user is
-    the creator.
-
-    :param id: id of group to get
-    :param check_author: require the current user to be the creator
-    :return: the group with creator information
-    :raise 404: if a group with the given id doesn't exist
-    :raise 403: if the current user isn't the creator
-    """
     task = (
         get_db()
         .execute(
@@ -60,11 +52,11 @@ def get_task(task_id, check_creator=True):
 
     return task
 
-
+# create a new task for the current user
 @bp.route("/create", methods=("GET", "POST"))
 @login_required
 def create(group_id):
-    """Create a new task for the current user."""
+    
     if request.method == "POST":
         task_name = request.form["task_name"]
         task_description = request.form["task_description"]
@@ -98,10 +90,11 @@ def create(group_id):
 
     return render_template("tasks/create.html")
 
+# update a task if the current user is the creator
 @bp.route("/<int:task_id>/update", methods=("GET", "POST"))
 @login_required
 def update(group_id, task_id):
-    """Update a task if the current user is the author."""
+    
     task = get_task(task_id)
 
     if request.method == "POST":
@@ -128,14 +121,12 @@ def update(group_id, task_id):
 
     return render_template("tasks/update.html", task=task, group_id=task['group_id'])
 
+# delete a task
+# ensures that the task exists and that the logged in user is the creator of the task
 @bp.route("/<int:task_id>/delete", methods=("POST",))
 @login_required
 def delete(group_id, task_id):
-    """Delete a task.
 
-    Ensures that the task exists and that the logged in user is the
-    author of the task.
-    """
     task = get_task(task_id)
     db = get_db()
     db.execute("DELETE FROM tasks WHERE task_id = ?", (task_id,))
