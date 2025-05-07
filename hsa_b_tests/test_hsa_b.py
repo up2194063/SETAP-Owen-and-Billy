@@ -3,12 +3,25 @@ from hsa_b.db import get_db
 
 # Helper function to register a user
 def register_user(client, username="owen", email="owen25@gmail.com", password="Password123!"):
-    return client.post("/auth/register", data={
-        "username": username,
+   return client.post("/auth/register", data={
+      "username": username,
+     "email": email,
+    "password": password
+})
+
+# Helper function to login a user
+def login_user(client, email="owen25@gmail.com", password="Password123!"):
+    return client.post("/auth/login", data={
         "email": email,
         "password": password
     })
 
+# Helper function to create a group
+def create_group(client, group_name="g1", group_description="this is g1"):
+    return client.post("/create", data={
+        "group_name": group_name,
+        "group_description": group_description
+    })
 
 #Fixtures (get used for each new test)
 @pytest.fixture
@@ -197,10 +210,9 @@ def test_registration_duplicate_email(client, app):
     
     assert b"Account with email owen25@gmail.com is already registered." in response.data  # Check for error message
 
-#These following tests are testing the robustness of the group page
-#This includes, cre
-
-#REGISTRATION
+#
+#
+#
 
 
 
@@ -245,3 +257,61 @@ def test_login_incorrect_password(client, app):
 
     # Check if the flash message for incorrect password is present in the response body (rendered HTML)
     assert b'Incorrect password.' in response.data  # Check for the error message in HTML
+
+    
+    
+#TESTING GROUP PAGE
+
+# Test 1: Test successful creation of a group
+def test_group_creation_successful(client, app):
+    register_user(client)
+    client.post("/auth/login", data={
+        "email": "owen25@gmail.com",
+        "password": "Password123!"
+    })
+    
+    response = client.post("/create", data={
+        "group_name": "g1",
+        "group_description": "This is g1."
+    })
+    
+    assert response.status_code == 302  # Should redirect after successful creation
+    assert response.location.endswith("/")  # Ensure redirection to groups page
+    with app.app_context():
+        db = get_db()
+        group = db.execute("SELECT * FROM groups WHERE group_name = ?", ("g1",)).fetchone()
+        assert group is not None  # Check that the group was created
+
+# Register and log in a user
+def test_group_edit_successful(client, app):
+    register_user(client)
+    client.post("/auth/login", data={
+        "email": "owen25@gmail.com",
+        "password": "Password123!"
+    })
+    
+    # Create a group
+    create_group(client, group_name="g1", group_description="This is g1.")
+    
+    # Fetch the group ID for the created group
+    with app.app_context():
+        db = get_db()
+        group = db.execute("SELECT * FROM groups WHERE group_name = ?", ("g1",)).fetchone()
+        group_id = group["group_id"]
+    # Update the group name from "g1" to "g2"
+    response = client.post(f"/{group_id}/update", data={
+        "group_name": "g2",
+        "group_description": "This is g2."
+    })
+    
+    assert response.status_code == 302  # Should redirect after successful update
+    assert response.location.endswith("/")  # Ensure redirection to groups page
+    # Verify that the group name has been updated in the database
+    with app.app_context():  # Create a new app context for database access
+        db = get_db()  # Get the database connection
+        updated_group = db.execute("SELECT * FROM groups WHERE group_id = ?", (group_id,)).fetchone()
+        assert updated_group is not None  # Check that the group still exists
+        assert updated_group["group_name"] == "g2"  # Check that the group name has been updated
+
+
+
