@@ -20,7 +20,7 @@ The final step before being able to open the web app is the initialisation of th
 
 .. code-block:: posh
 
-    PS C:\users\my_user\repository_name> python -m flask --app hsa init-db
+    PS C:\users\my_user\repository_name> python -m flask --app hsa_b init-db
 
 .. note::
 
@@ -30,13 +30,13 @@ After completing all of the steps above, the following code must be run in the t
 
 .. code-block:: posh
 
-    PS C:\users\my_user\repository_name> python -m flask --app hsa run --debug
+    PS C:\users\my_user\repository_name> python -m flask --app hsa_b run --debug
 
 When the above code is run, this will host the web app on a server which can be seen in the terminal:
 
 .. code-block:: posh
 
-    PS C:\users\my_user\repository_name> python -m flask --app hsa run --debug
+    PS C:\users\my_user\repository_name> python -m flask --app hsa_b run --debug
      * Serving Flask app 'hsa'
      * Debug mode: on
     WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
