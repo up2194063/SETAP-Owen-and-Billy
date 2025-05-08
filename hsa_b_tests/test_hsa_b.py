@@ -210,18 +210,6 @@ def test_registration_duplicate_email(client, app):
     
     assert b"Account with email owen25@gmail.com is already registered." in response.data  # Check for error message
 
-#
-#
-#
-
-
-
-
-
-
-
-
-
 #TESTING LOGIN
 
 #Test 1: Test successful login with valid credentials
