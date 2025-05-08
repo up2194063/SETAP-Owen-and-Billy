@@ -312,6 +312,87 @@ def test_group_edit_successful(client, app):
         updated_group = db.execute("SELECT * FROM groups WHERE group_id = ?", (group_id,)).fetchone()
         assert updated_group is not None  # Check that the group still exists
         assert updated_group["group_name"] == "g2"  # Check that the group name has been updated
+        assert updated_group["group_description"] == "This is g2."  # Check that the group name has been updated
 
+def test_group_edit_empty_group_name(client, app):
+    register_user(client)
+    client.post("/auth/login", data={
+        "email": "owen25@gmail.com",
+        "password": "Password123!"
+    })
+    
+    create_group(client, group_name="g1", group_description="This is g1.")
+    
+    with app.app_context():
+        db = get_db()
+        group = db.execute("SELECT * FROM groups WHERE group_name = ?", ("g1",)).fetchone()
+        group_id = group["group_id"]
+    
+    response = client.post(f"/{group_id}/update", data={
+        "group_name": "",
+        "group_description": "This is g1."
+    })
+    
+    # Expect 200 OK because form is re-rendered
+    assert response.status_code == 200
+    # Check that error message is shown to user
+    assert b"Group name is required." in response.data
+    # Verify the group has NOT been updated in the database
+    with app.app_context():
+        db = get_db()
+        updated_group = db.execute("SELECT * FROM groups WHERE group_id = ?", (group_id,)).fetchone()
+        assert updated_group is not None
+        assert updated_group["group_name"] == "g1"
+        assert updated_group["group_description"] == "This is g1."
 
+def test_group_edit_empty_description_success(client, app):
+    register_user(client)
+    client.post("/auth/login", data={
+        "email": "owen25@gmail.com",
+        "password": "Password123!"
+    })
+    
+    create_group(client, group_name="g1", group_description="This is g1.")
+    
+    with app.app_context():
+        db = get_db()
+        group = db.execute("SELECT * FROM groups WHERE group_name = ?", ("g1",)).fetchone()
+        group_id = group["group_id"]
+    
+    # Update group with empty description (allowed)
+    response = client.post(f"/{group_id}/update", data={
+        "group_name": "g1",
+        "group_description": ""
+    })
+    
+    assert response.status_code == 302  # Redirect after successful update
+    assert response.location.endswith("/")  # Redirect to groups page
+    # Verify that the group description is now empty
+    with app.app_context():
+        db = get_db()
+        updated_group = db.execute("SELECT * FROM groups WHERE group_id = ?", (group_id,)).fetchone()
+        assert updated_group is not None
+        assert updated_group["group_description"] == ""
 
+def test_group_deletion_success(client, app):
+    register_user(client)
+    client.post("/auth/login", data={
+        "email": "owen25@gmail.com",
+        "password": "Password123!"
+    })
+    # Create a group
+    create_group(client, group_name="g1", group_description="This is g1.")
+    with app.app_context():
+        db = get_db()
+        group = db.execute("SELECT * FROM groups WHERE group_name = ?", ("g1",)).fetchone()
+        group_id = group["group_id"]
+    # Send POST request to delete the group
+    response = client.post(f"/{group_id}/delete")
+    # Check for redirect to groups index page
+    assert response.status_code == 302
+    assert response.location.endswith("/")
+    # Verify group is deleted from the database
+    with app.app_context():
+        db = get_db()
+        deleted_group = db.execute("SELECT * FROM groups WHERE group_id = ?", (group_id,)).fetchone()
+        assert deleted_group is None
